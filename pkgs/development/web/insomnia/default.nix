@@ -6,22 +6,22 @@
 }:
 let
   pname = "insomnia";
-  version = "9.0.0";
+  version = "9.3.2";
 
   src = fetchurl {
     x86_64-darwin = {
       url = "https://github.com/Kong/insomnia/releases/download/core%40${version}/Insomnia.Core-${version}.dmg";
-      hash = "sha256-QIArPdThQcNTUgrXpWP8JHaZfrZ/6ztekIvzFdoWjsY=";
+      hash = "sha256-t/kCVFjxf9lqCDUWhe/TwFufSbYSGOsOMHVrzBZ+FNo=";
     };
     x86_64-linux = {
       url = "https://github.com/Kong/insomnia/releases/download/core%40${version}/Insomnia.Core-${version}.AppImage";
-      hash = "sha256-2UiqopYmNxnDcIqQMn/H89ugvOtTWkHH4LrmKkQErSs=";
+      hash = "sha256-ehXWcAwvDN2e45QwVjlzHwZRNnmErccrYzzXCCRfX+Y=";
     };
   }.${stdenv.system} or (throw "Unsupported system: ${stdenv.system}");
 
   meta = with lib; {
     homepage = "https://insomnia.rest";
-    description = " The open-source, cross-platform API client for GraphQL, REST, WebSockets, SSE and gRPC. With Cloud, Local and Git storage. ";
+    description = "The open-source, cross-platform API client for GraphQL, REST, WebSockets, SSE and gRPC. With Cloud, Local and Git storage.";
     mainProgram = "insomnia";
     changelog = "https://github.com/Kong/insomnia/releases/tag/core@${version}";
     license = licenses.asl20;
