@@ -1,0 +1,17 @@
+{ fetchNuGet }: [
+  (fetchNuGet { pname = "Avalonia"; version = "11.0.11"; hash = "sha256-vyX1hwqHQBIckXl/IYctR7BtYzM/62iZ6Y3Hsrlgww8="; })
+  (fetchNuGet { pname = "Avalonia.Controls.DataGrid"; version = "11.0.11"; hash = "sha256-PPs+D+dJ0OTay8gzDcucjWjfQWiizTHAluquzsFicZ4="; })
+  (fetchNuGet { pname = "Avalonia.Controls.ItemsRepeater"; version = "11.0.11"; hash = "sha256-rVoNNUbuHhE02pxEHLUdUDRlirJor9RRdekfBBb+IjE="; })
+  (fetchNuGet { pname = "Avalonia.Desktop"; version = "11.0.11"; hash = "sha256-62JpECNZV60qiS1KCTm9ojnUXOx5yEP4Mjo3/OZszMQ="; })
+  (fetchNuGet { pname = "Avalonia.Fonts.Inter"; version = "11.0.11"; hash = "sha256-FxduVJwM71YZaDtPTDL7lLpD7MYuGyrco2WdKk4hrzE="; })
+  (fetchNuGet { pname = "Avalonia.Native"; version = "11.0.11"; hash = "sha256-8Co6wR74u5jdAeN0Fx7LJf8vOUt84auomZz3TFSdlWw="; })
+  (fetchNuGet { pname = "Avalonia.ReactiveUI"; version = "11.0.11"; hash = "sha256-8/ixQaKhkv6Jk8Y/VF6HtCkm/9M6MEV7XFNLwOsjtzo="; })
+  (fetchNuGet { pname = "Avalonia.Skia"; version = "11.0.11"; hash = "sha256-s5fmFi207DZVRejw5PlvnPsdo9voet/l2VJtgwLDJYs="; })
+  (fetchNuGet { pname = "Avalonia.Themes.Fluent"; version = "11.0.11"; hash = "sha256-cvLzWHt2P2dmJ690mv0wejk2VCa0n1xX4sYCim+7Gxo="; })
+  (fetchNuGet { pname = "Avalonia.X11"; version = "11.0.11"; hash = "sha256-1hsU8zBxQGUp/wAx3qSQfxte+fGsSmH9TN3OHW0rNOk="; })
+  (fetchNuGet { pname = "CommunityToolkit.Mvvm"; version = "8.2.2"; hash = "sha256-vdprWEw+J6yJZLWZTUFTrQAHWLuPVXPBaYmePD7kcwY="; })
+  (fetchNuGet { pname = "JetBrains.Annotations"; version = "2023.2.0"; hash = "sha256-Um10fSmO+21I7f+lbzzVq5e8GBijJ9amTvOlt362p1s="; })
+  (fetchNuGet { pname = "System.Reactive"; version = "6.0.0"; hash = "sha256-hXB18OsiUHSCmRF3unAfdUEcbXVbG6/nZxcyz13oe9Y="; })
+  (fetchNuGet { pname = "Microsoft.Data.Sqlite"; version = "8.0.7"; hash = "sha256-SB3xsvBf/YIWzDW3F5FDOearyqnOXga5g4IEz2ZPHMg="; })
+  (fetchNuGet { pname = "System.Linq.Async"; version = "6.0.1"; hash = "sha256-uH5fZhcyQVtnsFc6GTUaRRrAQm05v5euJyWCXSFSOYI="; })
+]
