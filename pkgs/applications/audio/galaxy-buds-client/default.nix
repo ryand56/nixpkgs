@@ -1,27 +1,34 @@
-{ lib
-, stdenv
-, buildDotnetModule
-, fetchFromGitHub
-, fontconfig
-, xorg
-, libglvnd
-, makeDesktopItem
-, copyDesktopItems
-, graphicsmagick
+{
+  lib,
+  stdenv,
+  buildDotnetModule,
+  dotnetCorePackages,
+  fetchFromGitHub,
+  fontconfig,
+  xorg,
+  libglvnd,
+  makeDesktopItem,
+  copyDesktopItems,
+  graphicsmagick,
 }:
 
+let
+  dotnet = dotnetCorePackages.dotnet_8;
+in
 buildDotnetModule rec {
   pname = "galaxy-buds-client";
-  version = "4.5.4";
+  version = "5.1.0";
 
   src = fetchFromGitHub {
-    owner = "ThePBone";
+    owner = "timschneeb";
     repo = "GalaxyBudsClient";
     rev = version;
-    hash = "sha256-mmhXTtESjc8uNULc9zV2Qy/815BEEL7ybdnjArF2CXY=";
+    hash = "sha256-9m9H0T4rD6HIvb15h7+Q7SgLk0PkISkN8ojjh7nsiwA=";
   };
 
   projectFile = [ "GalaxyBudsClient/GalaxyBudsClient.csproj" ];
+  dotnet-sdk = dotnet.sdk;
+  dotnet-runtime = dotnet.runtime;
   nugetDeps = ./deps.nix;
   dotnetFlags = [ "-p:Runtimeidentifier=linux-x64" ];
 
@@ -30,7 +37,10 @@ buildDotnetModule rec {
     graphicsmagick
   ];
 
-  buildInputs = [ stdenv.cc.cc.lib fontconfig ];
+  buildInputs = [
+    stdenv.cc.cc.lib
+    fontconfig
+  ];
 
   runtimeDeps = [
     libglvnd
