@@ -10,7 +10,6 @@
   withNode ? true,
   version,
   hash,
-  buildPackages,
 }:
 let
   majorVersion = lib.versions.major version;
@@ -71,9 +70,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   passthru =
     let
-      fetchDepsAttrs = callPackages ./fetch-deps {
-        pnpm = buildPackages."pnpm_${lib.versions.major version}";
-      };
+      fetchDepsAttrs = callPackages ./fetch-deps { pnpm = finalAttrs.finalPackage; };
     in
     {
       inherit (fetchDepsAttrs) fetchDeps configHook;
