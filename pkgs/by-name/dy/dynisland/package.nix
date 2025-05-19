@@ -12,14 +12,14 @@
   installShellFiles,
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "dynisland";
   version = "0.1.3";
 
   src = fetchFromGitHub {
     owner = "cr3eperall";
     repo = "dynisland";
-    tag = version;
+    tag = finalAttrs.version;
     hash = "sha256-HqwykR6BXxtYSxNUYdegmjCwSVTW29pqP7qLWbcqLeg=";
     fetchSubmodules = true;
   };
@@ -55,10 +55,10 @@ rustPlatform.buildRustPackage rec {
   meta = {
     description = "Dynamic and extensible GTK4 layer-shell, written in Rust";
     homepage = "https://github.com/cr3eperall/dynisland";
-    changelog = "https://github.com/cr3eperall/dynisland/releases/tag/${version}";
+    changelog = "https://github.com/cr3eperall/dynisland/releases/tag/${finalAttrs.version}";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ ryand56 ];
     mainProgram = "dynisland";
     platforms = lib.platforms.linux;
   };
-}
+})
