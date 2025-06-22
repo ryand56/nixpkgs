@@ -4,6 +4,7 @@
   fetchFromGitHub,
   nixosTests,
   alsa-lib,
+  apple-sdk,
   boost,
   cmake,
   cryptopp,
@@ -13,10 +14,12 @@
   half,
   jack2,
   libdecor,
+  libglvnd,
   libpulseaudio,
   libunwind,
   libusb1,
   magic-enum,
+  moltenvk,
   libgbm,
   pipewire,
   pkg-config,
@@ -50,7 +53,6 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   buildInputs = [
-    alsa-lib
     boost
     cryptopp
     glslang
@@ -58,39 +60,53 @@ stdenv.mkDerivation (finalAttrs: {
     fmt
     half
     jack2
-    libdecor
     libpulseaudio
-    libunwind
     libusb1
     xorg.libX11
     xorg.libXext
     magic-enum
-    libgbm
-    pipewire
     pugixml
     qt6.qtbase
     qt6.qtdeclarative
     qt6.qtmultimedia
     qt6.qttools
-    qt6.qtwayland
     rapidjson
-    renderdoc
     robin-map
     sdl3
     sndio
     stb
-    vulkan-headers
     vulkan-loader
+    vulkan-headers
     vulkan-memory-allocator
     xxHash
     zlib-ng
+  ] ++ lib.optionals stdenv.hostPlatform.isLinux [
+    alsa-lib
+
+    libdecor
+    libgbm
+    libunwind
+
+    pipewire
+
+    qt6.qtwayland
+
+    renderdoc
+  ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    apple-sdk
   ];
 
   nativeBuildInputs = [
     cmake
     pkg-config
     qt6.wrapQtAppsHook
+  ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    libglvnd
   ];
+
+  preConfigure = lib.optionalString stdenv.hostPlatform.isDarwin ''
+    NIX_CFLAGS_COMPILE+=" -F$SDKROOT/System/Library/Frameworks"
+  '';
 
   cmakeFlags = [
     (lib.cmakeBool "ENABLE_QT_GUI" true)
@@ -136,6 +152,6 @@ stdenv.mkDerivation (finalAttrs: {
       liberodark
     ];
     mainProgram = "shadps4";
-    platforms = lib.intersectLists lib.platforms.linux lib.platforms.x86_64;
+    platforms = (lib.intersectLists lib.platforms.linux lib.platforms.x86_64) ++ lib.platforms.darwin;
   };
 })
