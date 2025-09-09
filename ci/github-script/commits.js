@@ -208,7 +208,7 @@ module.exports = async ({ github, context, core, dry, cherryPicks }) => {
     )
     core.summary.addEOL()
     core.summary.addRaw(
-      "Some of the commits in this PR require the author's and reviewer's attention.",
+      "Some of the commits in this PR may require the author and/or reviewer's attention.",
       true,
     )
     core.summary.addEOL()
