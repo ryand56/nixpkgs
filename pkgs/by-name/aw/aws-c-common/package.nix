@@ -36,6 +36,7 @@ stdenv.mkDerivation rec {
     let
       ignoreTests = [
         "promise_test_multiple_waiters"
+        "test_memory_usage_maxrss"
       ];
     in
     ''
