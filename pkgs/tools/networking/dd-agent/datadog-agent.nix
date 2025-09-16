@@ -23,12 +23,12 @@ let
   owner = "DataDog";
   repo = "datadog-agent";
   goPackagePath = "github.com/${owner}/${repo}";
-  version = "7.70.0";
+  version = "7.70.2";
 
   src = fetchFromGitHub {
     inherit owner repo;
     tag = version;
-    hash = "sha256-3wv9Cmqiq5ImEfHmaooGrSSKu9BsQoT36qFu2/t/rsU=";
+    hash = "sha256-yXtybHWrm+6kWW396FLlRZI0YVuThGuLfSYzoNXAEBU=";
   };
   rtloader = stdenv.mkDerivation {
     pname = "datadog-agent-rtloader";
@@ -53,7 +53,7 @@ buildGoModule rec {
     if stdenv.hostPlatform.isDarwin then
       ""
     else
-      "sha256-kXX2TKMxEOV4acr+hg1eCDHfjazxe9qIP4JOVawKFK4=";
+      "sha256-iWOwhfSI7mLmDy6yewV0h9Y4pjYAV6Tz6TxsINOxYMg=";
 
   subPackages = [
     "cmd/agent"
@@ -70,13 +70,11 @@ buildGoModule rec {
 
   proxyVendor = true;
 
-  env = {
-    PKG_CONFIG_PATH = "${python}/lib/pkgconfig";
-    GOWORK = "off";
-  };
+  env.PKG_CONFIG_PATH = "${python}/lib/pkgconfig";
 
   tags = [
     "ec2"
+    "kubelet"
     "python"
     "process"
     "log"

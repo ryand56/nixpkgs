@@ -42,13 +42,13 @@
 
 let
   inherit (lib) attrValues mapAttrs;
-  version = "7.70.0";
+  version = "7.70.2";
 
   src = fetchFromGitHub {
     owner = "DataDog";
     repo = "integrations-core";
     tag = version;
-    hash = "sha256-8EocsZ2CeiF8vb7KlC9n1nLMluhq69DjjLX8hY1kwec=";
+    hash = "sha256-3H8nQpy/m53ZjtDfe6s89yowBXnPt+1ARfWxcx+JwQM=";
   };
 
   # Build helper to build a single datadog integration package.
