@@ -17,16 +17,16 @@
 }:
 let
   # https://codeberg.org/comaps/comaps/src/branch/main/data/countries.txt
-  mapRev = 260321;
+  mapRev = 260504;
 
   worldMap = fetchurl {
     url = "https://cdn-fi-1.comaps.app/maps/${toString mapRev}/World.mwm";
-    hash = "sha256-pMmzPcWbS9drQzJCfiac2dfSMihiHDfhFyG5ux0pG54=";
+    hash = "sha256-FpMsTO19D0E8KDeDfPHifkByF67Sj0UNos5kDBHvyDo=";
   };
 
   worldCoasts = fetchurl {
     url = "https://cdn-fi-1.comaps.app/maps/${toString mapRev}/WorldCoasts.mwm";
-    hash = "sha256-5LI6itC6LhprVfgGbT/HYy1lzZLZLUe2QoSil0/7kIc=";
+    hash = "sha256-F54MF8yVYBzVY2r+JFD/WTsut+5ziwSacBGA/KZW+P8=";
   };
 
   pythonEnv = python3.withPackages (
@@ -37,18 +37,18 @@ let
 in
 organicmaps.overrideAttrs (oldAttrs: rec {
   pname = "comaps";
-  version = "2026.03.23-5";
+  version = "2026.05.06-11";
 
   src = fetchFromCodeberg {
     owner = "comaps";
     repo = "comaps";
     tag = "v${version}";
-    hash = "sha256-1bD0QiEZu6nB7wwBpfpEf+WypqbOd9XuXbq7FDTL7bw=";
+    hash = "sha256-lkSGjBU5Xxj6pvhmOPH3wu9rB/RfinDZsHVAXRsxWj4=";
     fetchSubmodules = true;
   };
 
   patches = [
-    ./use-vendored-protobuf.patch
+    ./relax-protobuf-version.patch
 
     # Include missing editor_tests_support.
     ./fix-editor-tests.patch
@@ -62,6 +62,9 @@ organicmaps.overrideAttrs (oldAttrs: rec {
     patchShebangs tools/unix/*
     substituteInPlace tools/python/{categories/json_to_txt.py,generate_desktop_ui_strings.py} \
       --replace-fail "/usr/bin/env python3" "${pythonEnv.interpreter}"
+
+    substituteInPlace libs/editor/CMakeLists.txt \
+      --replace-fail "add_subdirectory(editor_tests_support)" ""
   '';
 
   nativeBuildInputs = (builtins.filter (x: x != python3) oldAttrs.nativeBuildInputs or [ ]) ++ [
@@ -81,6 +84,7 @@ organicmaps.overrideAttrs (oldAttrs: rec {
   ];
 
   preConfigure = ''
+    export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
     bash ./configure.sh --skip-map-download
   '';
 
@@ -88,12 +92,9 @@ organicmaps.overrideAttrs (oldAttrs: rec {
     (lib.cmakeBool "WITH_SYSTEM_PROVIDED_3PARTY" true)
   ];
 
-  env = {
-    NIX_CFLAGS_COMPILE = toString [
-      "-I/build/source/3party/fast_double_parser/include"
-    ];
-    PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION = "python";
-  };
+  env.NIX_CFLAGS_COMPILE = toString [
+    "-I/build/source/3party/fast_double_parser/include"
+  ];
 
   postInstall = ''
     install -Dm644 ${worldMap} $out/share/comaps/data/World.mwm
