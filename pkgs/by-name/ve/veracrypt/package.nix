@@ -70,10 +70,12 @@ stdenv.mkDerivation (finalAttrs: {
   meta = {
     description = "Free Open-Source filesystem on-the-fly encryption";
     homepage = "https://www.veracrypt.fr/";
-    license = with lib.licenses; [
-      asl20 # and
-      unfree # TrueCrypt License version 3.0
-    ];
+    license =
+      with lib.licenses;
+      AND [
+        asl20
+        unfree # TrueCrypt License version 3.0
+      ];
     maintainers = [ lib.maintainers.ryand56 ];
     platforms = lib.platforms.linux;
   };
