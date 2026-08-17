@@ -15,9 +15,11 @@
   fmt,
   freetype,
   half,
+  howard-hinnant-date,
   httplib,
   jack2,
   libdecor,
+  libllvm,
   libpng,
   libpulseaudio,
   libunwind,
@@ -77,7 +79,7 @@ clangStdenv.mkDerivation (finalAttrs: {
     owner = "shadps4-emu";
     repo = "shadPS4";
     tag = "v.${finalAttrs.version}";
-    hash = "sha256-Z3UwxK+0D3RXKTM0ybYG4U42bInjF05KlMXzxN4UcNg=";
+    hash = "sha256-kQq8Q5rH2xpQggZ97tVLexJd3oReW+lcQPSk/Nn0bqY=";
 
     postCheckout = ''
       git -C "$out" rev-parse --short=8 HEAD > $out/COMMIT
@@ -98,7 +100,10 @@ clangStdenv.mkDerivation (finalAttrs: {
         spdlog \
         libressl \
         ImGuiFileDialog \
-        protobuf
+        protobuf \
+        epoll-shim \
+        vulkan-loader \
+        mesa-kosmickrisp
     '';
   };
 
@@ -133,7 +138,6 @@ clangStdenv.mkDerivation (finalAttrs: {
   ];
 
   buildInputs = [
-    alsa-lib
     boost
     cli11
     cryptopp
@@ -143,7 +147,6 @@ clangStdenv.mkDerivation (finalAttrs: {
     half
     httplib
     jack2
-    libdecor
     libpng
     libpulseaudio
     libunwind
@@ -160,12 +163,9 @@ clangStdenv.mkDerivation (finalAttrs: {
     minimp3
     miniupnpc
     miniz
-    libgbm
     nlohmann_json
-    pipewire
     pugixml
     rapidjson
-    renderdoc
     robin-map
     sdl3
     sdl3-mixer
@@ -181,6 +181,17 @@ clangStdenv.mkDerivation (finalAttrs: {
     zarchive
     zstd
     zlib
+  ]
+  ++ lib.optionals clangStdenv.hostPlatform.isLinux [
+    alsa-lib
+    libdecor
+    libgbm
+    pipewire
+    renderdoc
+  ]
+  ++ lib.optionals clangStdenv.hostPlatform.isDarwin [
+    howard-hinnant-date
+    libllvm
   ];
 
   cmakeFlags = [
@@ -198,10 +209,10 @@ clangStdenv.mkDerivation (finalAttrs: {
   postInstall = ''
     wrapProgram $out/bin/shadps4 \
       --prefix LD_LIBRARY_PATH : ${
-        lib.makeLibraryPath [
+        lib.makeLibraryPath ([
           libpulseaudio
-          pipewire
         ]
+        ++ lib.optional clangStdenv.hostPlatform.isLinux pipewire)
       }
   '';
 
@@ -231,6 +242,8 @@ clangStdenv.mkDerivation (finalAttrs: {
       liberodark
     ];
     mainProgram = "shadps4";
-    platforms = lib.intersectLists lib.platforms.linux lib.platforms.x86_64;
+    platforms =
+      lib.intersectLists lib.platforms.linux lib.platforms.x86_64
+      ++ lib.intersectLists lib.platforms.darwin lib.platforms.aarch64;
   };
 })
