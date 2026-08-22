@@ -4,6 +4,7 @@
   pythonAtLeast,
   pythonOlder,
   fetchFromGitHub,
+  fetchpatch,
   isPyPy,
 
   # build-system
@@ -59,6 +60,15 @@ buildPythonPackage rec {
     '';
     hash = "sha256-PgqjCeyHOhWtZjyzSZyvsPT0Q7yRyNDiW3x1fQq0K+8=";
   };
+
+  patches = [
+    # https://github.com/pygments/pygments/pull/3185
+    (fetchpatch {
+      name = "pygments-2.21.0-compat.patch";
+      url = "https://github.com/sphinx-doc/sphinx/compare/e44a40eb2f810558ccd9da1425421270ccb81351...bb316161fa2c6cd20f20e3a9ac3e64c9bd4abf74.patch";
+      hash = "sha256-XS+QMljXJG89YogVWzdJRmOUoeorYIA8BSuw8u1kS8o=";
+    })
+  ];
 
   build-system = [ flit-core ];
 
