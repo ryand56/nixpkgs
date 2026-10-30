@@ -30,6 +30,10 @@ let
         python3
       ];
 
+      cmakeFlags = [
+        (lib.cmakeFeature "CMAKE_INSTALL_MESSAGE" "NEVER")
+      ];
+
       postInstall =
         lib.optionalString (name == "packages3d") ''
           find $out -type f -name '*.step' | parallel 'stepreduce {} {} ${lib.optionalString compressStep "&& zip -j -9 {.}.stpZ {} && rm {}"}'

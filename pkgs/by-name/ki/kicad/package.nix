@@ -25,7 +25,7 @@
   stable ? true,
   compressStep ? true,
   testing ? false,
-  withNgspice ? !stdenv.hostPlatform.isDarwin,
+  withNgspice ? true,
   libngspice,
   withScripting ? true,
   python3,
@@ -356,7 +356,6 @@ stdenv.mkDerivation rec {
       ryand56
     ];
     platforms = lib.platforms.all;
-    broken = stdenv.hostPlatform.isDarwin;
     mainProgram = "kicad";
   };
 }
